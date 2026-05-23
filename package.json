@@ -1,0 +1,40 @@
+{
+  "name": "village-square",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Village Square is a civic engagement platform for local councils, councillors, MPs, constituency representatives, local representatives, and residents.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HoutanGh/village-square.git"
+  },
+  "bugs": {
+    "url": "https://github.com/HoutanGh/village-square/issues"
+  },
+  "homepage": "https://github.com/HoutanGh/village-square#readme",
+  "dependencies": {
+    "next": "^16.2.6",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.1",
+    "@types/react": "^19.2.15",
+    "@types/react-dom": "^19.2.3",
+    "eslint": "^9.39.4",
+    "eslint-config-next": "^16.2.6",
+    "prettier": "^3.8.3",
+    "typescript": "^6.0.3"
+  },
+  "overrides": {
+    "postcss": "^8.5.10"
+  }
+}
