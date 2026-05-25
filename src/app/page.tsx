@@ -1,43 +1,59 @@
-const milestones = [
-  "UI shell",
-  "Mock issue feed",
-  "Expandable issues",
-  "Create issue flow",
-  "Representative dashboard",
-  "Admin moderation dashboard",
-];
+import Link from "next/link";
 
 export default function Home() {
   return (
     <main className="page-shell">
       <section className="hero" aria-labelledby="page-title">
-        <span className="phase-tag">UI-first prototype</span>
+        <span className="phase-tag">Local priorities board</span>
         <h1 id="page-title">Village Square</h1>
         <p className="lead">
-          A civic engagement platform for residents and local representatives to
-          raise, discuss, and respond to local issues.
+          A simple civic space for residents to raise local issues and help
+          representatives see what matters most.
         </p>
+        <div className="action-row">
+          <Link className="button button--primary" href="/issues">
+            View local priorities
+          </Link>
+          <Link className="button button--secondary" href="/sign-in">
+            Prototype sign in
+          </Link>
+        </div>
       </section>
 
-      <section className="content-section" aria-labelledby="mvp-title">
-        <h2 id="mvp-title">MVP product loop</h2>
-        <ol className="numbered-list">
-          <li>A resident views local issues.</li>
-          <li>A resident creates a new issue.</li>
-          <li>Other residents vote and comment.</li>
-          <li>A representative replies officially.</li>
-          <li>An admin reviews moderation tools.</li>
-          <li>Issues are marked as Open or Done.</li>
-        </ol>
+      <section className="content-section" aria-labelledby="experience-title">
+        <h2 id="experience-title">What the first prototype covers</h2>
+        <div className="summary-grid">
+          <div>
+            <h3>Raise local issues</h3>
+            <p>
+              Residents can describe a local priority with a short title and
+              brief details.
+            </p>
+          </div>
+          <div>
+            <h3>Show support</h3>
+            <p>
+              Issues use simple up and down arrows to show whether something is
+              a priority.
+            </p>
+          </div>
+          <div>
+            <h3>Track outcomes</h3>
+            <p>
+              Issues can be Open or Addressed. Addressed means a real outcome
+              happened.
+            </p>
+          </div>
+        </div>
       </section>
 
-      <section className="content-section" aria-labelledby="milestones-title">
-        <h2 id="milestones-title">First milestones</h2>
-        <ul className="milestone-list">
-          {milestones.map((milestone) => (
-            <li key={milestone}>{milestone}</li>
-          ))}
-        </ul>
+      <section className="content-section" aria-labelledby="scope-title">
+        <h2 id="scope-title">Prototype boundaries</h2>
+        <p>
+          This UI shell uses mock-only flows. It does not include real accounts,
+          verification, moderation, database writes, payments, AI, or council
+          integrations.
+        </p>
       </section>
     </main>
   );

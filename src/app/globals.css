@@ -5,7 +5,10 @@
   --border: #b1b4b6;
   --accent: #1d70b8;
   --accent-dark: #003078;
+  --accent-darker: #001f4f;
+  --success: #00703c;
   --surface: #f3f2f1;
+  --surface-strong: #e7e5e1;
   --focus: #ffdd00;
 }
 
@@ -25,12 +28,72 @@ body {
 
 a {
   color: var(--accent);
+  text-underline-offset: 0.16em;
 }
 
 a:focus,
 button:focus {
   outline: 3px solid var(--focus);
   outline-offset: 0;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+.site-header {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+.site-header__inner {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.site-header__brand {
+  color: var(--background);
+  font-size: 22px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  font-size: 17px;
+}
+
+.site-nav a {
+  color: var(--background);
+  font-weight: 700;
+}
+
+.site-footer {
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.site-footer__inner {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px;
+  color: var(--muted);
+  font-size: 16px;
+}
+
+.site-footer p {
+  max-width: 720px;
+  margin: 0;
+  line-height: 1.45;
 }
 
 .page-shell {
@@ -45,6 +108,10 @@ button:focus {
   padding-bottom: 28px;
 }
 
+.page-intro {
+  padding-bottom: 8px;
+}
+
 .phase-tag {
   display: inline-block;
   margin-bottom: 16px;
@@ -55,7 +122,8 @@ button:focus {
 }
 
 h1,
-h2 {
+h2,
+h3 {
   margin: 0;
   line-height: 1.1;
 }
@@ -67,6 +135,10 @@ h1 {
 
 h2 {
   font-size: 30px;
+}
+
+h3 {
+  font-size: 22px;
 }
 
 .lead {
@@ -83,23 +155,229 @@ h2 {
   margin-top: 28px;
 }
 
-.numbered-list,
-.milestone-list {
-  margin: 18px 0 0;
-  padding-left: 24px;
-  color: var(--foreground);
+.content-section p {
+  max-width: 720px;
+  margin: 16px 0 0;
   font-size: 19px;
-  line-height: 1.55;
+  line-height: 1.5;
 }
 
-.milestone-list {
+.action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 16px;
+  border: 2px solid transparent;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.button--primary {
+  background: var(--accent);
+  color: var(--background);
+  box-shadow: 0 2px 0 var(--accent-darker);
+}
+
+.button--secondary {
+  border-color: var(--foreground);
+  background: var(--background);
+  color: var(--foreground);
+  box-shadow: 0 2px 0 var(--foreground);
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
+.summary-grid,
+.role-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 12px 24px;
-  padding-left: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.summary-grid p,
+.role-option p {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 17px;
+}
+
+.composer {
+  max-width: 720px;
+  border: 2px solid var(--border);
+  background: var(--surface);
+}
+
+.composer summary {
+  padding: 16px;
+  font-size: 21px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.composer__form {
+  border-top: 1px solid var(--border);
+  padding: 18px 16px 20px;
+}
+
+.composer__form label {
+  display: block;
+  margin-top: 18px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.composer__form label:first-child {
+  margin-top: 0;
+}
+
+.composer__form input,
+.composer__form textarea {
+  width: 100%;
+  max-width: 620px;
+  margin-top: 8px;
+  border: 2px solid var(--foreground);
+  padding: 10px;
+  background: var(--background);
+  font-size: 18px;
+}
+
+.composer__form .button {
+  margin-top: 18px;
+}
+
+.form-note {
+  max-width: 620px;
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.issue-list {
+  display: grid;
+  gap: 18px;
+  margin-top: 28px;
+}
+
+.issue-card {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 18px;
+  border: 1px solid var(--border);
+  border-left: 6px solid var(--accent);
+  padding: 18px;
+  background: var(--background);
+}
+
+.vote-stack {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 6px;
+}
+
+.vote-stack button {
+  width: 36px;
+  height: 36px;
+  border: 2px solid var(--border);
+  background: var(--surface);
+  color: var(--foreground);
+  font-size: 18px;
+  line-height: 1;
+}
+
+.vote-stack strong {
+  font-size: 21px;
+}
+
+.issue-card__content {
+  min-width: 0;
+}
+
+.issue-card__content h2 {
+  margin-top: 12px;
+  font-size: 24px;
+}
+
+.issue-card__content p {
+  max-width: 720px;
+  margin: 10px 0 0;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.issue-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 16px;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 2px 8px;
+  border: 2px solid var(--accent-dark);
+  color: var(--accent-dark);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.status-pill--addressed {
+  border-color: var(--success);
+  color: var(--success);
+}
+
+.outcome-note {
+  margin-top: 16px;
+  border-left: 5px solid var(--success);
+  padding: 12px 14px;
+  background: var(--surface);
+}
+
+.outcome-note p {
+  margin-top: 6px;
+}
+
+.role-option {
+  border-top: 4px solid var(--accent-dark);
+  padding: 18px;
+  background: var(--surface);
+}
+
+.role-option .button {
+  margin-top: 16px;
 }
 
 @media (max-width: 640px) {
+  .site-header__inner {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 14px 16px;
+  }
+
+  .site-nav {
+    flex-direction: column;
+    gap: 8px;
+  }
+
   .page-shell {
     padding: 28px 16px 48px;
   }
@@ -114,5 +392,16 @@ h2 {
 
   .lead {
     font-size: 21px;
+  }
+
+  .issue-card {
+    grid-template-columns: 1fr;
+  }
+
+  .vote-stack {
+    grid-template-columns: 36px auto 36px;
+    justify-content: start;
+    justify-items: center;
+    align-items: center;
   }
 }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -14,7 +15,29 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <header className="site-header">
+          <div className="site-header__inner">
+            <Link className="site-header__brand" href="/">
+              Village Square
+            </Link>
+            <nav className="site-nav" aria-label="Primary navigation">
+              <Link href="/">Home</Link>
+              <Link href="/issues">Local priorities</Link>
+              <Link href="/sign-in">Prototype sign in</Link>
+            </nav>
+          </div>
+        </header>
+        {children}
+        <footer className="site-footer">
+          <div className="site-footer__inner">
+            <p>
+              Village Square is a civic engagement prototype. It is not an
+              official GOV.UK service.
+            </p>
+          </div>
+        </footer>
+      </body>
     </html>
   );
 }
