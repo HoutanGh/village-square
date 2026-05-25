@@ -1,29 +1,65 @@
-const mockIssues = [
+type IssueStatus = "Open" | "Addressed";
+
+type MockIssue = {
+  id: string;
+  title: string;
+  details: string;
+  status: IssueStatus;
+  score: number;
+  supportCount: number;
+  notPriorityCount: number;
+  commentCount: number;
+  officialUpdate?: string;
+};
+
+const mockIssues: MockIssue[] = [
   {
+    id: "station-road-potholes",
+    title: "Potholes on Station Road",
+    details:
+      "Several deep potholes near the station entrance are forcing cyclists into traffic and making the bus stop harder to reach.",
+    status: "Open",
+    score: 42,
+    supportCount: 58,
+    notPriorityCount: 16,
+    commentCount: 12,
+  },
+  {
+    id: "park-fly-tipping",
+    title: "Fly-tipping near the park",
+    details:
+      "Rubbish bags and broken furniture have been left beside the north gate for more than a week.",
+    status: "Open",
+    score: 31,
+    supportCount: 39,
+    notPriorityCount: 8,
+    commentCount: 7,
+  },
+  {
+    id: "market-lane-lighting",
     title: "Improve lighting near Market Lane",
     details:
-      "Several residents have raised that the footpath feels unsafe after dark, especially near the bus stops.",
-    score: 42,
-    comments: 8,
+      "The footpath between the shops and bus stops feels unsafe after dark because two lamps are not working.",
     status: "Open",
+    score: 24,
+    supportCount: 32,
+    notPriorityCount: 8,
+    commentCount: 5,
+    officialUpdate:
+      "Representative reply requested from the local highways team.",
   },
   {
-    title: "Repair damaged pavement by the library",
+    id: "street-lighting-repaired",
+    title: "Street lighting repaired",
     details:
-      "Uneven paving outside the library entrance is making access harder for wheelchair users and parents with buggies.",
-    score: 29,
-    comments: 5,
-    status: "Open",
-  },
-  {
-    title: "Add a safe crossing near Elm Primary",
-    details:
-      "Families have asked for a clearer crossing point on the school route during morning drop-off.",
-    score: 64,
-    comments: 14,
+      "Residents reported broken lights around the footpath behind the community centre.",
     status: "Addressed",
-    outcome:
-      "A temporary crossing patrol has been agreed while a permanent crossing assessment is completed.",
+    score: 18,
+    supportCount: 23,
+    notPriorityCount: 5,
+    commentCount: 4,
+    officialUpdate:
+      "Outcome: the broken lamps were repaired by the maintenance contractor on Friday.",
   },
 ];
 
@@ -32,14 +68,48 @@ export default function IssuesPage() {
     <main className="page-shell">
       <section className="page-intro" aria-labelledby="issues-title">
         <span className="phase-tag">Single-area demo</span>
-        <h1 id="issues-title">Local priorities</h1>
+        <h1 id="issues-title">Local priorities in Example local area</h1>
         <p className="lead">
-          See what local residents are raising and which issues have the most
-          support.
+          See what local residents are raising, what has support, and which
+          issues have been addressed.
         </p>
+        <div className="action-row">
+          <a className="button button--primary" href="#raise-issue">
+            Raise an issue
+          </a>
+        </div>
       </section>
 
-      <section className="content-section" aria-labelledby="composer-title">
+      <section
+        className="board-controls"
+        aria-label="Issue filters and sorting"
+      >
+        <div className="control-group" aria-label="Filter by status">
+          <span className="control-group__label">Filter</span>
+          <button className="filter-button filter-button--active" type="button">
+            Open
+          </button>
+          <button className="filter-button" type="button">
+            Addressed
+          </button>
+        </div>
+
+        <div className="control-group" aria-label="Sort issues">
+          <span className="control-group__label">Sort</span>
+          <button className="filter-button filter-button--active" type="button">
+            Most supported
+          </button>
+          <button className="filter-button" type="button">
+            Newest
+          </button>
+        </div>
+      </section>
+
+      <section
+        className="content-section"
+        id="raise-issue"
+        aria-labelledby="composer-title"
+      >
         <details className="composer">
           <summary id="composer-title">Raise an issue</summary>
           <form className="composer__form">
@@ -71,13 +141,14 @@ export default function IssuesPage() {
 
       <section className="issue-list" aria-label="Local issue list">
         {mockIssues.map((issue) => (
-          <article className="issue-card" key={issue.title}>
+          <article className="issue-card" key={issue.id}>
             <div className="vote-stack" aria-label="Voting preview">
-              <button type="button" disabled aria-label="Support issue">
+              <button type="button" aria-label="Support issue">
                 ▲
               </button>
               <strong>{issue.score}</strong>
-              <button type="button" disabled aria-label="Not a priority">
+              <span>score</span>
+              <button type="button" aria-label="Not a priority">
                 ▼
               </button>
             </div>
@@ -92,16 +163,42 @@ export default function IssuesPage() {
                 >
                   {issue.status}
                 </span>
-                <span>{issue.comments} comments</span>
+                <span>{issue.commentCount} comments</span>
               </div>
               <h2>{issue.title}</h2>
               <p>{issue.details}</p>
-              {issue.outcome ? (
+
+              <dl className="issue-stats" aria-label="Issue activity">
+                <div>
+                  <dt>Support</dt>
+                  <dd>{issue.supportCount}</dd>
+                </div>
+                <div>
+                  <dt>Not a priority</dt>
+                  <dd>{issue.notPriorityCount}</dd>
+                </div>
+                <div>
+                  <dt>Comments</dt>
+                  <dd>{issue.commentCount}</dd>
+                </div>
+              </dl>
+
+              {issue.officialUpdate ? (
                 <div className="outcome-note">
-                  <strong>Outcome note</strong>
-                  <p>{issue.outcome}</p>
+                  <strong>
+                    {issue.status === "Addressed"
+                      ? "Official outcome"
+                      : "Official update"}
+                  </strong>
+                  <p>{issue.officialUpdate}</p>
                 </div>
               ) : null}
+
+              <div className="issue-card__actions">
+                <button className="button button--secondary" type="button">
+                  View discussion
+                </button>
+              </div>
             </div>
           </article>
         ))}

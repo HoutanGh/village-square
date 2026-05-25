@@ -200,6 +200,46 @@ h3 {
   opacity: 0.58;
 }
 
+.board-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px 32px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 18px 0;
+  margin-top: 28px;
+}
+
+.control-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.control-group__label {
+  margin-right: 4px;
+  color: var(--muted);
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.filter-button {
+  min-height: 40px;
+  border: 2px solid var(--foreground);
+  padding: 6px 12px;
+  background: var(--background);
+  color: var(--foreground);
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.filter-button--active {
+  background: var(--foreground);
+  color: var(--background);
+}
+
 .summary-grid,
 .role-list {
   display: grid;
@@ -329,7 +369,7 @@ h3 {
   display: grid;
   justify-items: center;
   align-content: start;
-  gap: 6px;
+  gap: 5px;
 }
 
 .vote-stack button {
@@ -344,6 +384,11 @@ h3 {
 
 .vote-stack strong {
   font-size: 21px;
+}
+
+.vote-stack span {
+  color: var(--muted);
+  font-size: 14px;
 }
 
 .issue-card__content {
@@ -371,6 +416,30 @@ h3 {
   font-size: 16px;
 }
 
+.issue-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+  margin: 18px 0 0;
+}
+
+.issue-stats div {
+  border-top: 3px solid var(--surface-strong);
+  padding-top: 8px;
+}
+
+.issue-stats dt {
+  color: var(--muted);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.issue-stats dd {
+  margin: 4px 0 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+
 .status-pill {
   display: inline-flex;
   align-items: center;
@@ -396,6 +465,10 @@ h3 {
 
 .outcome-note p {
   margin-top: 6px;
+}
+
+.issue-card__actions {
+  margin-top: 18px;
 }
 
 .role-option {
@@ -450,5 +523,9 @@ h3 {
     justify-content: start;
     justify-items: center;
     align-items: center;
+  }
+
+  .vote-stack span {
+    display: none;
   }
 }
