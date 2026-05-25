@@ -164,6 +164,11 @@ export default function IssuesPage() {
   );
   const [replyDraft, setReplyDraft] = useState("");
   const [replyNotice, setReplyNotice] = useState<string | null>(null);
+  const [replyingToIssueId, setReplyingToIssueId] = useState<string | null>(
+    null,
+  );
+  const [issueReplyDraft, setIssueReplyDraft] = useState("");
+  const [issueReplyNotice, setIssueReplyNotice] = useState<string | null>(null);
   const [isComposerOpen, setIsComposerOpen] = useState(false);
   const [composerTitle, setComposerTitle] = useState("");
   const [composerDetails, setComposerDetails] = useState("");
@@ -203,6 +208,44 @@ export default function IssuesPage() {
         ? current.filter((id) => id !== commentId)
         : [...current, commentId],
     );
+  }
+
+  function handleDiscussionToggle(issueId: string, isExpanded: boolean) {
+    if (isExpanded) {
+      setExpandedIssueId(null);
+      setReplyingToIssueId(null);
+      setReplyingToCommentId(null);
+      setIssueReplyDraft("");
+      setIssueReplyNotice(null);
+      setReplyDraft("");
+      setReplyNotice(null);
+      return;
+    }
+
+    setExpandedIssueId(issueId);
+  }
+
+  function handleIssueReplyStart(issueId: string) {
+    setExpandedIssueId(issueId);
+    setReplyingToIssueId((current) => (current === issueId ? null : issueId));
+    setReplyingToCommentId(null);
+    setIssueReplyDraft("");
+    setIssueReplyNotice(null);
+    setReplyDraft("");
+    setReplyNotice(null);
+  }
+
+  function handleIssueReplySubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (!issueReplyDraft.trim()) {
+      setIssueReplyNotice("Write a short reply before posting.");
+      return;
+    }
+
+    setIssueReplyNotice("Mock reply posted. It is not saved yet.");
+    setReplyingToIssueId(null);
+    setIssueReplyDraft("");
   }
 
   function handleMockReplySubmit() {
@@ -394,12 +437,20 @@ export default function IssuesPage() {
                     type="button"
                     aria-controls={discussionId}
                     aria-expanded={isExpanded}
-                    onClick={() =>
-                      setExpandedIssueId(isExpanded ? null : issue.id)
-                    }
+                    onClick={() => handleDiscussionToggle(issue.id, isExpanded)}
                   >
                     <span aria-hidden="true">{isExpanded ? "−" : "+"}</span>
                     {isExpanded ? "Hide discussion" : "View discussion"}
+                  </button>
+                  <button
+                    className="issue-action"
+                    type="button"
+                    aria-controls={`${issue.id}-reply-form`}
+                    aria-expanded={replyingToIssueId === issue.id}
+                    onClick={() => handleIssueReplyStart(issue.id)}
+                  >
+                    <span aria-hidden="true">↩</span>
+                    Reply
                   </button>
                 </div>
 
@@ -425,6 +476,56 @@ export default function IssuesPage() {
                       </section>
                     ) : null}
 
+                    {replyingToIssueId === issue.id ? (
+                      <form
+                        className="issue-reply-form"
+                        id={`${issue.id}-reply-form`}
+                        onSubmit={handleIssueReplySubmit}
+                      >
+                        <label htmlFor={`${issue.id}-reply`}>
+                          Reply to this issue
+                        </label>
+                        <textarea
+                          id={`${issue.id}-reply`}
+                          name={`${issue.id}-reply`}
+                          rows={3}
+                          value={issueReplyDraft}
+                          onChange={(event) => {
+                            setIssueReplyDraft(event.target.value);
+                            setIssueReplyNotice(null);
+                          }}
+                          placeholder="Write a short reply as an anonymous local resident."
+                        />
+                        <div className="reply-actions">
+                          <button
+                            className="comment-action comment-action--strong"
+                            type="submit"
+                          >
+                            Post reply
+                          </button>
+                          <button
+                            className="comment-action"
+                            type="button"
+                            onClick={() => {
+                              setReplyingToIssueId(null);
+                              setIssueReplyDraft("");
+                              setIssueReplyNotice(null);
+                            }}
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                        {issueReplyNotice ? (
+                          <p className="form-note" role="status">
+                            {issueReplyNotice}
+                          </p>
+                        ) : null}
+                        <p className="form-note">
+                          Mock-only reply box. Replies are not saved yet.
+                        </p>
+                      </form>
+                    ) : null}
+
                     <section
                       className="discussion-section"
                       aria-labelledby={`${issue.id}-comments-title`}
@@ -438,6 +539,9 @@ export default function IssuesPage() {
                         replyNotice={replyNotice}
                         onReplyDraftChange={setReplyDraft}
                         onReplyStart={(commentId) => {
+                          setReplyingToIssueId(null);
+                          setIssueReplyDraft("");
+                          setIssueReplyNotice(null);
                           setReplyNotice(null);
                           setReplyDraft("");
                           setReplyingToCommentId(commentId);
@@ -451,28 +555,6 @@ export default function IssuesPage() {
                         onToggleReplies={toggleCommentReplies}
                       />
                     </section>
-
-                    <form className="mock-comment-form">
-                      <label htmlFor={`${issue.id}-comment`}>
-                        Add a comment
-                      </label>
-                      <textarea
-                        id={`${issue.id}-comment`}
-                        name={`${issue.id}-comment`}
-                        rows={3}
-                        placeholder="Write a short comment as an anonymous local resident."
-                      />
-                      <button
-                        className="comment-action comment-action--strong"
-                        type="button"
-                        disabled
-                      >
-                        Post comment
-                      </button>
-                      <p className="form-note">
-                        Mock-only comment box. Comments are not saved yet.
-                      </p>
-                    </form>
                   </div>
                 ) : null}
               </div>

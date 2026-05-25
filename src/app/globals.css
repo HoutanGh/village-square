@@ -613,31 +613,29 @@ h3 {
   cursor: pointer;
 }
 
-.comment-action:disabled {
-  color: var(--muted);
-  cursor: not-allowed;
-  opacity: 0.72;
-}
-
 .comment-action--strong {
   color: var(--foreground);
 }
 
-.mock-comment-form {
+.issue-reply-form {
   max-width: 620px;
   margin-top: 18px;
   border-left: 2px solid var(--border);
   padding-left: 14px;
 }
 
-.mock-comment-form label {
+.discussion-panel > .issue-reply-form:first-child {
+  margin-top: 0;
+}
+
+.issue-reply-form label {
   display: block;
   color: var(--muted);
   font-size: 16px;
   font-weight: 600;
 }
 
-.mock-comment-form textarea {
+.issue-reply-form textarea {
   width: 100%;
   margin-top: 6px;
   border: 1px solid var(--border);
@@ -646,11 +644,11 @@ h3 {
   font-size: 17px;
 }
 
-.mock-comment-form .comment-action {
+.issue-reply-form .comment-action {
   margin-top: 8px;
 }
 
-.mock-comment-form .form-note {
+.issue-reply-form .form-note {
   margin-top: 8px;
 }
 
