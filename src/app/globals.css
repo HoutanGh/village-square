@@ -392,8 +392,7 @@ h3 {
   grid-template-columns: 64px minmax(0, 1fr);
   gap: 18px;
   border: 1px solid var(--border);
-  border-left: 6px solid var(--accent);
-  padding: 18px;
+  padding: 16px;
   background: var(--background);
 }
 
@@ -407,15 +406,19 @@ h3 {
 .vote-stack button {
   width: 36px;
   height: 36px;
-  border: 2px solid var(--border);
-  background: var(--surface);
-  color: var(--foreground);
+  border: 0;
+  background: transparent;
+  color: var(--muted);
   font-size: 18px;
   line-height: 1;
 }
 
+.vote-stack button:hover {
+  color: var(--accent-dark);
+}
+
 .vote-stack strong {
-  font-size: 21px;
+  font-size: 20px;
 }
 
 .vote-stack span {
@@ -428,8 +431,9 @@ h3 {
 }
 
 .issue-card__content h2 {
-  margin-top: 12px;
-  font-size: 24px;
+  margin-top: 10px;
+  font-size: 22px;
+  font-weight: 700;
 }
 
 .issue-card__content p {
@@ -448,39 +452,15 @@ h3 {
   font-size: 16px;
 }
 
-.issue-stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  gap: 10px;
-  margin: 18px 0 0;
-}
-
-.issue-stats div {
-  border-top: 3px solid var(--surface-strong);
-  padding-top: 8px;
-}
-
-.issue-stats dt {
-  color: var(--muted);
-  font-size: 15px;
-  font-weight: 700;
-}
-
-.issue-stats dd {
-  margin: 4px 0 0;
-  font-size: 20px;
-  font-weight: 700;
-}
-
 .status-pill {
   display: inline-flex;
   align-items: center;
   min-height: 28px;
   padding: 2px 8px;
-  border: 2px solid var(--accent-dark);
+  border: 1px solid var(--accent-dark);
   color: var(--accent-dark);
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .status-pill--addressed {
@@ -489,10 +469,10 @@ h3 {
 }
 
 .outcome-note {
-  margin-top: 16px;
-  border-left: 5px solid var(--success);
-  padding: 12px 14px;
-  background: var(--surface);
+  margin-top: 14px;
+  border-left: 4px solid var(--success);
+  padding: 8px 12px;
+  background: var(--background);
 }
 
 .outcome-note p {
@@ -506,7 +486,7 @@ h3 {
 .discussion-panel {
   margin-top: 22px;
   border-top: 1px solid var(--border);
-  padding-top: 20px;
+  padding-top: 16px;
 }
 
 .discussion-section {
@@ -519,6 +499,7 @@ h3 {
 
 .discussion-section h3 {
   font-size: 20px;
+  font-weight: 700;
 }
 
 .discussion-section p {
@@ -529,9 +510,9 @@ h3 {
 }
 
 .discussion-section--outcome {
-  border-left: 5px solid var(--success);
-  padding: 12px 14px;
-  background: var(--surface);
+  border-left: 4px solid var(--success);
+  padding: 8px 12px;
+  background: var(--background);
 }
 
 .comment-list {
@@ -541,14 +522,15 @@ h3 {
 }
 
 .resident-comment {
-  border-left: 4px solid var(--surface-strong);
-  padding: 10px 12px;
-  background: var(--surface);
+  border-left: 2px solid var(--border);
+  padding-left: 14px;
 }
 
 .resident-comment strong {
   display: block;
+  color: var(--muted);
   font-size: 16px;
+  font-weight: 600;
 }
 
 .resident-comment p {
@@ -556,11 +538,68 @@ h3 {
   font-size: 17px;
 }
 
+.resident-comment .comment-list {
+  margin-top: 12px;
+  margin-left: 16px;
+}
+
+.comment-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  margin-top: 8px;
+}
+
+.comment-votes {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.comment-votes button {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.comment-votes button:hover {
+  color: var(--accent-dark);
+}
+
+.comment-votes span {
+  font-weight: 700;
+}
+
+.comment-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--accent);
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.16em;
+  cursor: pointer;
+}
+
+.comment-action--strong {
+  color: var(--foreground);
+}
+
 .mock-comment-form {
   margin-top: 22px;
-  border: 2px solid var(--border);
-  padding: 16px;
-  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
 }
 
 .mock-comment-form label {
@@ -581,6 +620,36 @@ h3 {
 
 .mock-comment-form .button {
   margin-top: 14px;
+}
+
+.reply-composer {
+  max-width: 620px;
+  margin-top: 12px;
+  border-left: 2px solid var(--border);
+  padding-left: 12px;
+}
+
+.reply-composer label {
+  display: block;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.reply-composer textarea {
+  width: 100%;
+  max-width: 620px;
+  margin-top: 8px;
+  border: 2px solid var(--foreground);
+  padding: 10px;
+  background: var(--background);
+  font-size: 18px;
+}
+
+.reply-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
 }
 
 .role-option {
@@ -639,5 +708,13 @@ h3 {
 
   .vote-stack span {
     display: none;
+  }
+
+  .resident-comment {
+    padding-left: 10px;
+  }
+
+  .resident-comment .comment-list {
+    margin-left: 10px;
   }
 }
