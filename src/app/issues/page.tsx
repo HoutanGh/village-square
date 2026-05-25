@@ -390,7 +390,7 @@ export default function IssuesPage() {
 
                 <div className="issue-card__actions">
                   <button
-                    className="button button--secondary"
+                    className="issue-action"
                     type="button"
                     aria-controls={discussionId}
                     aria-expanded={isExpanded}
@@ -398,6 +398,7 @@ export default function IssuesPage() {
                       setExpandedIssueId(isExpanded ? null : issue.id)
                     }
                   >
+                    <span aria-hidden="true">{isExpanded ? "−" : "+"}</span>
                     {isExpanded ? "Hide discussion" : "View discussion"}
                   </button>
                 </div>
@@ -428,9 +429,7 @@ export default function IssuesPage() {
                       className="discussion-section"
                       aria-labelledby={`${issue.id}-comments-title`}
                     >
-                      <h3 id={`${issue.id}-comments-title`}>
-                        Anonymous local resident comments
-                      </h3>
+                      <h3 id={`${issue.id}-comments-title`}>Comments</h3>
                       <CommentThread
                         comments={issue.comments}
                         expandedCommentIds={expandedCommentIds}
@@ -464,7 +463,7 @@ export default function IssuesPage() {
                         placeholder="Write a short comment as an anonymous local resident."
                       />
                       <button
-                        className="button button--primary"
+                        className="comment-action comment-action--strong"
                         type="button"
                         disabled
                       >

@@ -480,11 +480,34 @@ h3 {
 }
 
 .issue-card__actions {
-  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 16px;
+}
+
+.issue-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--accent);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.issue-action span {
+  font-size: 18px;
+  line-height: 1;
 }
 
 .discussion-panel {
-  margin-top: 22px;
+  margin-top: 16px;
   border-top: 1px solid var(--border);
   padding-top: 16px;
 }
@@ -587,9 +610,13 @@ h3 {
   color: var(--accent);
   font-size: 16px;
   font-weight: 700;
-  text-decoration: underline;
-  text-underline-offset: 0.16em;
   cursor: pointer;
+}
+
+.comment-action:disabled {
+  color: var(--muted);
+  cursor: not-allowed;
+  opacity: 0.72;
 }
 
 .comment-action--strong {
@@ -597,29 +624,34 @@ h3 {
 }
 
 .mock-comment-form {
-  margin-top: 22px;
-  border-top: 1px solid var(--border);
-  padding-top: 16px;
+  max-width: 620px;
+  margin-top: 18px;
+  border-left: 2px solid var(--border);
+  padding-left: 14px;
 }
 
 .mock-comment-form label {
   display: block;
-  font-size: 18px;
-  font-weight: 700;
+  color: var(--muted);
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .mock-comment-form textarea {
   width: 100%;
-  max-width: 620px;
-  margin-top: 8px;
-  border: 2px solid var(--foreground);
-  padding: 10px;
+  margin-top: 6px;
+  border: 1px solid var(--border);
+  padding: 9px 10px;
   background: var(--background);
-  font-size: 18px;
+  font-size: 17px;
 }
 
-.mock-comment-form .button {
-  margin-top: 14px;
+.mock-comment-form .comment-action {
+  margin-top: 8px;
+}
+
+.mock-comment-form .form-note {
+  margin-top: 8px;
 }
 
 .reply-composer {
