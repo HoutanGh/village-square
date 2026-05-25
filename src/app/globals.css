@@ -471,6 +471,86 @@ h3 {
   margin-top: 18px;
 }
 
+.discussion-panel {
+  margin-top: 22px;
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
+}
+
+.discussion-section {
+  margin-top: 20px;
+}
+
+.discussion-section:first-child {
+  margin-top: 0;
+}
+
+.discussion-section h3 {
+  font-size: 20px;
+}
+
+.discussion-section p {
+  max-width: 720px;
+  margin: 8px 0 0;
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+.discussion-section--outcome {
+  border-left: 5px solid var(--success);
+  padding: 12px 14px;
+  background: var(--surface);
+}
+
+.comment-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.resident-comment {
+  border-left: 4px solid var(--surface-strong);
+  padding: 10px 12px;
+  background: var(--surface);
+}
+
+.resident-comment strong {
+  display: block;
+  font-size: 16px;
+}
+
+.resident-comment p {
+  margin-top: 6px;
+  font-size: 17px;
+}
+
+.mock-comment-form {
+  margin-top: 22px;
+  border: 2px solid var(--border);
+  padding: 16px;
+  background: var(--surface);
+}
+
+.mock-comment-form label {
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.mock-comment-form textarea {
+  width: 100%;
+  max-width: 620px;
+  margin-top: 8px;
+  border: 2px solid var(--foreground);
+  padding: 10px;
+  background: var(--background);
+  font-size: 18px;
+}
+
+.mock-comment-form .button {
+  margin-top: 14px;
+}
+
 .role-option {
   border-top: 4px solid var(--accent-dark);
   padding: 18px;

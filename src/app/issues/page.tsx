@@ -1,15 +1,28 @@
+"use client";
+
+import { useState } from "react";
+
 type IssueStatus = "Open" | "Addressed";
+
+type ResidentComment = {
+  id: string;
+  body: string;
+  postedBy: "Anonymous local resident";
+};
 
 type MockIssue = {
   id: string;
   title: string;
   details: string;
+  fullDetails: string;
   status: IssueStatus;
   score: number;
   supportCount: number;
   notPriorityCount: number;
   commentCount: number;
+  comments: ResidentComment[];
   officialUpdate?: string;
+  outcomeNote?: string;
 };
 
 const mockIssues: MockIssue[] = [
@@ -18,33 +31,70 @@ const mockIssues: MockIssue[] = [
     title: "Potholes on Station Road",
     details:
       "Several deep potholes near the station entrance are forcing cyclists into traffic and making the bus stop harder to reach.",
+    fullDetails:
+      "Residents have reported several potholes on Station Road between the station entrance and the bus stop. The concern is that cyclists are swerving around the damaged road surface during busy periods, while pedestrians using the crossing point are also affected by pooled water after rain.",
     status: "Open",
     score: 42,
     supportCount: 58,
     notPriorityCount: 16,
     commentCount: 12,
+    comments: [
+      {
+        id: "station-road-comment-1",
+        postedBy: "Anonymous local resident",
+        body: "This is worse after rain because the holes fill with water and become difficult to see.",
+      },
+      {
+        id: "station-road-comment-2",
+        postedBy: "Anonymous local resident",
+        body: "The section closest to the station entrance is the main problem during the morning commute.",
+      },
+    ],
   },
   {
     id: "park-fly-tipping",
     title: "Fly-tipping near the park",
     details:
       "Rubbish bags and broken furniture have been left beside the north gate for more than a week.",
+    fullDetails:
+      "The dumped items are near the north gate path into the park. Residents are concerned that the rubbish is attracting more dumping and blocking part of the path used by families and dog walkers.",
     status: "Open",
     score: 31,
     supportCount: 39,
     notPriorityCount: 8,
     commentCount: 7,
+    comments: [
+      {
+        id: "park-fly-tipping-comment-1",
+        postedBy: "Anonymous local resident",
+        body: "There are now loose bags as well as the furniture. It is starting to spread across the path.",
+      },
+      {
+        id: "park-fly-tipping-comment-2",
+        postedBy: "Anonymous local resident",
+        body: "This spot needs checking regularly because the same thing happened last month.",
+      },
+    ],
   },
   {
     id: "market-lane-lighting",
     title: "Improve lighting near Market Lane",
     details:
       "The footpath between the shops and bus stops feels unsafe after dark because two lamps are not working.",
+    fullDetails:
+      "The affected section is the path between the Market Lane shops and the bus stops. Two lights appear to be out, leaving a dark stretch that residents use after work and school activities.",
     status: "Open",
     score: 24,
     supportCount: 32,
     notPriorityCount: 8,
     commentCount: 5,
+    comments: [
+      {
+        id: "market-lane-comment-1",
+        postedBy: "Anonymous local resident",
+        body: "This is the route many people use from the bus stop. It feels avoidable if the lights are repaired.",
+      },
+    ],
     officialUpdate:
       "Representative reply requested from the local highways team.",
   },
@@ -53,17 +103,35 @@ const mockIssues: MockIssue[] = [
     title: "Street lighting repaired",
     details:
       "Residents reported broken lights around the footpath behind the community centre.",
+    fullDetails:
+      "The issue covered broken lights along the footpath behind the community centre. Residents said the route was difficult to use safely during the evening, especially after community events.",
     status: "Addressed",
     score: 18,
     supportCount: 23,
     notPriorityCount: 5,
     commentCount: 4,
+    comments: [
+      {
+        id: "street-lighting-comment-1",
+        postedBy: "Anonymous local resident",
+        body: "The lights are working again now. This has made the route much easier to use in the evening.",
+      },
+      {
+        id: "street-lighting-comment-2",
+        postedBy: "Anonymous local resident",
+        body: "Thanks for following this up. It was a small fix but made a noticeable difference.",
+      },
+    ],
     officialUpdate:
-      "Outcome: the broken lamps were repaired by the maintenance contractor on Friday.",
+      "The repair was confirmed by the maintenance contractor on Friday.",
+    outcomeNote:
+      "The broken lamps were repaired and the footpath is lit again.",
   },
 ];
 
 export default function IssuesPage() {
+  const [expandedIssueId, setExpandedIssueId] = useState<string | null>(null);
+
   return (
     <main className="page-shell">
       <section className="page-intro" aria-labelledby="issues-title">
@@ -140,68 +208,151 @@ export default function IssuesPage() {
       </section>
 
       <section className="issue-list" aria-label="Local issue list">
-        {mockIssues.map((issue) => (
-          <article className="issue-card" key={issue.id}>
-            <div className="vote-stack" aria-label="Voting preview">
-              <button type="button" aria-label="Support issue">
-                ▲
-              </button>
-              <strong>{issue.score}</strong>
-              <span>score</span>
-              <button type="button" aria-label="Not a priority">
-                ▼
-              </button>
-            </div>
-            <div className="issue-card__content">
-              <div className="issue-card__meta">
-                <span
-                  className={
-                    issue.status === "Addressed"
-                      ? "status-pill status-pill--addressed"
-                      : "status-pill"
-                  }
-                >
-                  {issue.status}
-                </span>
-                <span>{issue.commentCount} comments</span>
-              </div>
-              <h2>{issue.title}</h2>
-              <p>{issue.details}</p>
+        {mockIssues.map((issue) => {
+          const isExpanded = expandedIssueId === issue.id;
+          const discussionId = `${issue.id}-discussion`;
 
-              <dl className="issue-stats" aria-label="Issue activity">
-                <div>
-                  <dt>Support</dt>
-                  <dd>{issue.supportCount}</dd>
-                </div>
-                <div>
-                  <dt>Not a priority</dt>
-                  <dd>{issue.notPriorityCount}</dd>
-                </div>
-                <div>
-                  <dt>Comments</dt>
-                  <dd>{issue.commentCount}</dd>
-                </div>
-              </dl>
-
-              {issue.officialUpdate ? (
-                <div className="outcome-note">
-                  <strong>
-                    {issue.status === "Addressed"
-                      ? "Official outcome"
-                      : "Official update"}
-                  </strong>
-                  <p>{issue.officialUpdate}</p>
-                </div>
-              ) : null}
-
-              <div className="issue-card__actions">
-                <button className="button button--secondary" type="button">
-                  View discussion
+          return (
+            <article className="issue-card" key={issue.id}>
+              <div className="vote-stack" aria-label="Voting preview">
+                <button type="button" aria-label="Support issue">
+                  ▲
+                </button>
+                <strong>{issue.score}</strong>
+                <span>score</span>
+                <button type="button" aria-label="Not a priority">
+                  ▼
                 </button>
               </div>
-            </div>
-          </article>
-        ))}
+              <div className="issue-card__content">
+                <div className="issue-card__meta">
+                  <span
+                    className={
+                      issue.status === "Addressed"
+                        ? "status-pill status-pill--addressed"
+                        : "status-pill"
+                    }
+                  >
+                    {issue.status}
+                  </span>
+                  <span>{issue.commentCount} comments</span>
+                </div>
+                <h2>{issue.title}</h2>
+                <p>{issue.details}</p>
+
+                <dl className="issue-stats" aria-label="Issue activity">
+                  <div>
+                    <dt>Support</dt>
+                    <dd>{issue.supportCount}</dd>
+                  </div>
+                  <div>
+                    <dt>Not a priority</dt>
+                    <dd>{issue.notPriorityCount}</dd>
+                  </div>
+                  <div>
+                    <dt>Comments</dt>
+                    <dd>{issue.commentCount}</dd>
+                  </div>
+                </dl>
+
+                {issue.officialUpdate ? (
+                  <div className="outcome-note">
+                    <strong>Official update</strong>
+                    <p>{issue.officialUpdate}</p>
+                  </div>
+                ) : null}
+
+                <div className="issue-card__actions">
+                  <button
+                    className="button button--secondary"
+                    type="button"
+                    aria-controls={discussionId}
+                    aria-expanded={isExpanded}
+                    onClick={() =>
+                      setExpandedIssueId(isExpanded ? null : issue.id)
+                    }
+                  >
+                    {isExpanded ? "Hide discussion" : "View discussion"}
+                  </button>
+                </div>
+
+                {isExpanded ? (
+                  <div className="discussion-panel" id={discussionId}>
+                    <section
+                      className="discussion-section"
+                      aria-labelledby={`${issue.id}-details-title`}
+                    >
+                      <h3 id={`${issue.id}-details-title`}>Full details</h3>
+                      <p>{issue.fullDetails}</p>
+                    </section>
+
+                    {issue.officialUpdate ? (
+                      <section
+                        className="discussion-section"
+                        aria-labelledby={`${issue.id}-update-title`}
+                      >
+                        <h3 id={`${issue.id}-update-title`}>Official update</h3>
+                        <p>{issue.officialUpdate}</p>
+                      </section>
+                    ) : null}
+
+                    {issue.status === "Addressed" && issue.outcomeNote ? (
+                      <section
+                        className="discussion-section discussion-section--outcome"
+                        aria-labelledby={`${issue.id}-outcome-title`}
+                      >
+                        <h3 id={`${issue.id}-outcome-title`}>Outcome note</h3>
+                        <p>{issue.outcomeNote}</p>
+                      </section>
+                    ) : null}
+
+                    <section
+                      className="discussion-section"
+                      aria-labelledby={`${issue.id}-comments-title`}
+                    >
+                      <h3 id={`${issue.id}-comments-title`}>
+                        Anonymous local resident comments
+                      </h3>
+                      <div className="comment-list">
+                        {issue.comments.map((comment) => (
+                          <article
+                            className="resident-comment"
+                            key={comment.id}
+                          >
+                            <strong>{comment.postedBy}</strong>
+                            <p>{comment.body}</p>
+                          </article>
+                        ))}
+                      </div>
+                    </section>
+
+                    <form className="mock-comment-form">
+                      <label htmlFor={`${issue.id}-comment`}>
+                        Add a comment
+                      </label>
+                      <textarea
+                        id={`${issue.id}-comment`}
+                        name={`${issue.id}-comment`}
+                        rows={3}
+                        placeholder="Write a short comment as an anonymous local resident."
+                      />
+                      <button
+                        className="button button--primary"
+                        type="button"
+                        disabled
+                      >
+                        Post comment
+                      </button>
+                      <p className="form-note">
+                        Mock-only comment box. Comments are not saved yet.
+                      </p>
+                    </form>
+                  </div>
+                ) : null}
+              </div>
+            </article>
+          );
+        })}
       </section>
     </main>
   );
