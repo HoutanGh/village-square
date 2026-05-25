@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { type FormEvent, useState } from "react";
 
 type IssueStatus = "Open" | "Addressed";
 
@@ -23,6 +23,11 @@ type MockIssue = {
   comments: ResidentComment[];
   officialUpdate?: string;
   outcomeNote?: string;
+};
+
+type ComposerErrors = {
+  title?: string;
+  details?: string;
 };
 
 const mockIssues: MockIssue[] = [
@@ -131,6 +136,38 @@ const mockIssues: MockIssue[] = [
 
 export default function IssuesPage() {
   const [expandedIssueId, setExpandedIssueId] = useState<string | null>(null);
+  const [isComposerOpen, setIsComposerOpen] = useState(false);
+  const [composerTitle, setComposerTitle] = useState("");
+  const [composerDetails, setComposerDetails] = useState("");
+  const [composerErrors, setComposerErrors] = useState<ComposerErrors>({});
+  const [composerSuccess, setComposerSuccess] = useState<string | null>(null);
+
+  function handleComposerSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const nextErrors: ComposerErrors = {};
+
+    if (!composerTitle.trim()) {
+      nextErrors.title = "Enter a short title.";
+    }
+
+    if (!composerDetails.trim()) {
+      nextErrors.details = "Enter brief details.";
+    }
+
+    if (Object.keys(nextErrors).length > 0) {
+      setComposerSuccess(null);
+      setComposerErrors(nextErrors);
+      return;
+    }
+
+    setComposerErrors({});
+    setComposerSuccess(
+      "Mock issue posted. It is not saved or added to the board yet.",
+    );
+    setComposerTitle("");
+    setComposerDetails("");
+  }
 
   return (
     <main className="page-shell">
@@ -142,9 +179,15 @@ export default function IssuesPage() {
           issues have been addressed.
         </p>
         <div className="action-row">
-          <a className="button button--primary" href="#raise-issue">
-            Raise an issue
-          </a>
+          <button
+            className="button button--primary"
+            type="button"
+            aria-controls="raise-issue"
+            aria-expanded={isComposerOpen}
+            onClick={() => setIsComposerOpen((current) => !current)}
+          >
+            {isComposerOpen ? "Hide issue composer" : "Raise an issue"}
+          </button>
         </div>
       </section>
 
@@ -174,37 +217,88 @@ export default function IssuesPage() {
       </section>
 
       <section
-        className="content-section"
+        className="composer-section"
         id="raise-issue"
-        aria-labelledby="composer-title"
+        aria-label="Issue composer"
       >
-        <details className="composer">
-          <summary id="composer-title">Raise an issue</summary>
-          <form className="composer__form">
-            <label htmlFor="issue-title">Short title</label>
-            <input
-              id="issue-title"
-              name="issue-title"
-              type="text"
-              placeholder="Example: Improve lighting near Market Lane"
-            />
+        {isComposerOpen ? (
+          <div
+            className="composer"
+            role="region"
+            aria-labelledby="composer-title"
+          >
+            <div className="composer__header">
+              <h2 id="composer-title">Raise an issue</h2>
+              <p>
+                Keep it short. Add enough detail for neighbours and
+                representatives to understand the local priority.
+              </p>
+            </div>
 
-            <label htmlFor="issue-details">Brief details</label>
-            <textarea
-              id="issue-details"
-              name="issue-details"
-              rows={4}
-              placeholder="Describe what is happening and who it affects."
-            />
+            {composerSuccess ? (
+              <p className="success-message" role="status">
+                {composerSuccess}
+              </p>
+            ) : null}
 
-            <button className="button button--primary" type="button" disabled>
-              Post issue
-            </button>
-            <p className="form-note">
-              Mock-only composer. Posting is not connected yet.
-            </p>
-          </form>
-        </details>
+            <form className="composer__form" onSubmit={handleComposerSubmit}>
+              <div className="field-group">
+                <label htmlFor="issue-title">Short title</label>
+                <input
+                  id="issue-title"
+                  name="issue-title"
+                  type="text"
+                  value={composerTitle}
+                  aria-describedby={
+                    composerErrors.title ? "issue-title-error" : undefined
+                  }
+                  aria-invalid={composerErrors.title ? "true" : undefined}
+                  onChange={(event) => {
+                    setComposerTitle(event.target.value);
+                    setComposerSuccess(null);
+                  }}
+                  placeholder="Example: Improve lighting near Market Lane"
+                />
+                {composerErrors.title ? (
+                  <p className="field-error" id="issue-title-error">
+                    {composerErrors.title}
+                  </p>
+                ) : null}
+              </div>
+
+              <div className="field-group">
+                <label htmlFor="issue-details">Brief details</label>
+                <textarea
+                  id="issue-details"
+                  name="issue-details"
+                  rows={4}
+                  value={composerDetails}
+                  aria-describedby={
+                    composerErrors.details ? "issue-details-error" : undefined
+                  }
+                  aria-invalid={composerErrors.details ? "true" : undefined}
+                  onChange={(event) => {
+                    setComposerDetails(event.target.value);
+                    setComposerSuccess(null);
+                  }}
+                  placeholder="Describe what is happening and who it affects."
+                />
+                {composerErrors.details ? (
+                  <p className="field-error" id="issue-details-error">
+                    {composerErrors.details}
+                  </p>
+                ) : null}
+              </div>
+
+              <button className="button button--primary" type="submit">
+                Post issue
+              </button>
+              <p className="form-note">
+                Mock-only composer. This does not create or save a real issue.
+              </p>
+            </form>
+          </div>
+        ) : null}
       </section>
 
       <section className="issue-list" aria-label="Local issue list">

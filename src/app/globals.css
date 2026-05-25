@@ -297,33 +297,40 @@ h3 {
   font-size: 20px;
 }
 
+.composer-section {
+  margin-top: 28px;
+}
+
 .composer {
   max-width: 720px;
   border: 2px solid var(--border);
   background: var(--surface);
 }
 
-.composer summary {
-  padding: 16px;
-  font-size: 21px;
-  font-weight: 700;
-  cursor: pointer;
+.composer__header {
+  padding: 16px 16px 0;
+}
+
+.composer__header h2 {
+  font-size: 26px;
+}
+
+.composer__header p {
+  max-width: 620px;
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.45;
 }
 
 .composer__form {
-  border-top: 1px solid var(--border);
-  padding: 18px 16px 20px;
+  padding: 16px 16px 20px;
 }
 
 .composer__form label {
   display: block;
-  margin-top: 18px;
   font-size: 18px;
   font-weight: 700;
-}
-
-.composer__form label:first-child {
-  margin-top: 0;
 }
 
 .composer__form input,
@@ -335,6 +342,31 @@ h3 {
   padding: 10px;
   background: var(--background);
   font-size: 18px;
+}
+
+.field-group {
+  margin-top: 18px;
+}
+
+.field-group:first-child {
+  margin-top: 0;
+}
+
+.field-error {
+  margin: 8px 0 0;
+  color: #d4351c;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.success-message {
+  margin: 16px 16px 0;
+  border-left: 5px solid var(--success);
+  padding: 10px 12px;
+  background: var(--background);
+  color: var(--foreground);
+  font-size: 17px;
+  font-weight: 700;
 }
 
 .composer__form .button {
